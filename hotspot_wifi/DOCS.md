@@ -1,0 +1,115 @@
+# Hostpot wifi pour Raspberry avec RaspAP
+
+This is an example add-on for Home Assistant. When started, it displays a
+random quote every 5 seconds.
+
+It shows off several features and structures like:
+
+- Full blown GitHub repository.
+- General Dockerfile structure and setup.
+- The use of the `config.json` and `build.json` files.
+- General shell scripting structure (`run.sh`).
+- Quality assurance using CodeClimate.
+- Continuous integration and deployment using GitLab.
+- Usage of the Community Home Assistant Add-ons build environment.
+- Small use of the Bash function library in our base images.
+- The use of Docker label schema.
+
+## Installation
+
+The installation of this add-on is pretty straightforward and not different in
+comparison to installing any other Home Assistant add-on.
+
+1. Search for the "Example" add-on in the Supervisor add-on store and install it.
+1. Start the "Example" add-on.
+1. Check the logs of the "Example" add-on to see it in action.
+
+## Configuration
+
+Eventought this add-on is just an example add-on, it does come with some
+configuration options to play around with.
+
+**Note**: _Remember to restart the add-on when the configuration is changed._
+
+Example add-on configuration:
+
+```yaml
+log_level: info
+seconds_between_quotes: 5
+```
+
+### Option: `log_level`
+
+The `log_level` option controls the level of log output by the add-on and can
+be changed to be more or less verbose, which might be useful when you are
+dealing with an unknown issue. Possible values are:
+
+- `trace`: Show every detail, like all called internal functions.
+- `debug`: Shows detailed debug information.
+- `info`: Normal (usually) interesting events.
+- `warning`: Exceptional occurrences that are not errors.
+- `error`: Runtime errors that do not require immediate action.
+- `fatal`: Something went terribly wrong. Add-on becomes unusable.
+
+Please note that each level automatically includes log messages from a
+more severe level, e.g., `debug` also shows `info` messages. By default,
+the `log_level` is set to `info`, which is the recommended setting unless
+you are troubleshooting.
+
+### Option: `seconds_between_quotes`
+
+Sets the number of seconds between the output of each quote. The value
+must be between `1` and `120` seconds. This value is set to `5` seconds by
+default.
+
+## Changelog & Releases
+
+This repository keeps a change log using [GitHub's releases][releases]
+functionality.
+
+Releases are based on [Semantic Versioning][semver], and use the format
+of `MAJOR.MINOR.PATCH`. In a nutshell, the version will be incremented
+based on the following:
+
+- `MAJOR`: Incompatible or major changes.
+- `MINOR`: Backwards-compatible new features and enhancements.
+- `PATCH`: Backwards-compatible bugfixes and package updates.
+
+## Support
+
+Got questions?
+
+You have several options to get them answered:
+
+- The [Home Assistant Community Add-ons Discord chat server][discord] for add-on
+  support and feature requests.
+- The [Home Assistant Discord chat server][discord-ha] for general Home
+  Assistant discussions and questions.
+- The Home Assistant [Community Forum][forum].
+- Join the [Reddit subreddit][reddit] in [/r/homeassistant][reddit]
+
+You could also [open an issue here][issue] GitHub.
+
+## Authors & contributors
+
+L'add-on est réalisé par [ArminasTV][Youtube]. Retrouvez moi sur mon [Twitter][Twitter], [Facebook][Facebook] et [Instagram][Instagram].
+
+For a full list of all authors and contributors,
+check [the contributor's page][contributors].
+
+## License
+
+GNU GENERAL PUBLIC LICENSE
+
+[contributors]: https://github.com/hassio-addons/addon-example/graphs/contributors
+[discord-ha]: https://discord.gg/c5DvZ4e
+[discord]: https://discord.me/hassioaddons
+[forum]: https://community.home-assistant.io/t/repository-community-hass-io-add-ons/24705?u=frenck
+[frenck]: https://github.com/frenck
+[issue]: https://github.com/hassio-addons/addon-example/issues
+[reddit]: https://reddit.com/r/homeassistant
+[releases]: https://github.com/hassio-addons/addon-example/releases
+[Youtube]: https://www.youtube.com/c/ArminasTV
+[Facebook]: https://www.facebook.com/ArminasTV
+[Instagram]: https://www.instagram.com/arminas.stream/?hl=fr
+[Twitter]: https://twitter.com/ArminasTV

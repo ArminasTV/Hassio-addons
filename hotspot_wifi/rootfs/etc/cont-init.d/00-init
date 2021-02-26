@@ -1,0 +1,78 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: Pi-hole
+# Runs the hostapd daemon
+# ==============================================================================
+
+# Run dnsmasq
+bashio::log.info "Init..."  
+declare DIR 
+declare DIR_RASPAP
+DIR="/config/hotspot_wifi"
+DIR_RASPAP="${DIR}/raspap"
+# Ensure configuration exists
+if ! bashio::fs.directory_exists "${DIR}"; then
+
+	bashio::log.info "Création du répertoire" 
+    mkdir -p "${DIR_RASPAP}" || bashio::exit.nok "Failed to create hotspot_wifi configuration directory" 
+ 
+    mkdir -p "${DIR_RASPAP}/networking"
+    mkdir -p "${DIR}/vnstat" 
+    mkdir -p "${DIR}/dhcpcd"
+    mkdir -p "${DIR}/hostapd" 
+    mkdir -p "${DIR}/dnsmasq" 
+
+    mv /var/www/html/raspap.php "${DIR_RASPAP}/raspap.php"
+     
+	#### dnsmasq
+	bashio::log.info "MV de ${DIR}/dnsmasq/dnsmasq.conf"
+    #mv /etc/dnsmasq.conf "${DIR}/dnsmasq/dnsmasq.conf"
+	mv /var/www/html/config/090_raspap.conf "${DIR}/dnsmasq"
+	mv /var/www/html/config/090_wlan0.conf "${DIR}/dnsmasq"
+	grep -riIl "/etc/dnsmasq.d" "${DIR}/dnsmasq" | xargs sed -i "s|/etc/dnsmasq.d|${DIR}/dnsmasq|g"
+	
+	#### dhcpcd
+	bashio::log.info "MV de ${DIR}/dhcpcd/dhcpcd.conf"
+    mv /var/www/html/config/dhcpcd.conf "${DIR}/dhcpcd/dhcpcd.conf"
+	#### hostapd
+	bashio::log.info "MV de ${DIR}/hostapd/hostapd.conf"
+    mv /var/www/html/config/hostapd.conf "${DIR}/hostapd/hostapd.conf"
+	
+	mv /var/www/html/config/defaults.json "${DIR_RASPAP}/networking/"
+    mv /etc/vnstat.conf "${DIR_RASPAP}/vnstat.conf"
+
+fi
+
+
+mv /etc/config.php /var/www/html/includes/
+mv /var/www/html/app/icons/* /var/www/html 
+
+mkdir /run/lighttpd/
+chown -R www-data:www-data /var/www/html/
+chown -R www-data:www-data /run/lighttpd/ 
+chown -R www-data:www-data /var/log/lighttpd/
+chown -R www-data:www-data "${DIR}"  || bashio::exit.nok "Failed chown -R www-data:www-data ${DIR_RASPAP}"
+
+echo '' > /tmp/hostapd.log
+echo '' > /tmp/dnsmasq.log
+chown -R www-data:www-data /tmp/ 
+chown -R www-data:www-data /var/tmp/ 
+
+grep -riIl '/etc/raspap/hostapd.ini' /var/www/html/ | xargs sed -i "s|/etc/raspap/hostapd.ini|${DIR_RASPAP}/hostapd.ini|g"
+grep -riIl "/etc/dnsmasq.d" /var/www/html/ | xargs sed -i "s|/etc/dnsmasq.d|${DIR}/dnsmasq|g"
+
+echo '' >> "${DIR_RASPAP}/hostapd.ini"
+	
+grep -riIl 'sudo' /var/www/html/ | xargs sed -i "s|sudo||g"
+grep -riIl 'hostname -f' /var/www/html/ | xargs sed -i "s|hostname -f|hostname|g"
+ifconfig wlan0 down
+ifconfig wlan0 up
+
+ 
+#if bashio::config.true 'internet'; then
+#    bashio::log.info "Enabled internet"  
+#    sysctl -w net.ipv4.ip_forward=1
+#    iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE 
+#    iptables -A FORWARD -i eth0 -o wlan0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+#    iptables -A FORWARD -i wlan0 -o eth0 -j ACCEPT
+#fi

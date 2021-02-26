@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: Pi-hole
+# Runs the lighttpd 
+# ==============================================================================
+
+bashio::log.info "lighttpd-enable-mod fastcgi-php   ..." 
+lighttpd-enable-mod fastcgi-php    
+
+bashio::log.info "Starting lighttpd ..." 
+exec lighttpd -f /etc/lighttpd/lighttpd.conf

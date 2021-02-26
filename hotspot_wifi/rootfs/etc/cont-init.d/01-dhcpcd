@@ -1,0 +1,14 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: Pi-hole
+# Runs the hostapd daemon
+# ==============================================================================
+ 
+
+DIR="/config/hotspot_wifi"
+# DIR_RASPAP="${DIR}/raspap"
+CONFIG="${DIR}/dhcpcd/dhcpcd.conf" 
+
+# Run dnsmasq
+bashio::log.info "Starting dhcpcd..." 
+dhcpcd -f "${CONFIG}"

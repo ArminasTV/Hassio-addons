@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bashio
+# ==============================================================================
+# Home Assistant Community Add-on: Pi-hole
+# Runs the vnstatd 
+# ==============================================================================
+
+DIR="/config/hotspot_wifi"
+DIR_RASPAP="${DIR}/raspap"
+CONFIG="${DIR_RASPAP}/vnstat.conf"
+
+# Run lighttpd
+bashio::log.info "Starting vnstatd ..." 
+vnstatd -d --config "${CONFIG}"

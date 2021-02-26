@@ -1,0 +1,29 @@
+{
+    "name": "Hotspot wifi pour RPI",
+    "version": "dev",
+    "slug": "hotspot_wifi", 
+    "description": "Addon Hotspot wifi with raspap-webgui",
+    "url": "https://github.com/ArminasTV/Hassio-addons/tree/master/hotspot_wifi",
+    "webui": "[PROTO:ssl]://[HOST]:[PORT:80]",
+    "startup": "application",
+    "arch": ["armv7"],
+    "map": ["config:rw"],
+    "ports": { 
+      "80/tcp": 80
+    },
+    "ports_description": { 
+      "80/tcp": "Web interface" 
+    },
+    "boot": "manual",
+    "host_network": true,
+    "hassio_api": true,
+    "hassio_role": "default",
+    "auth_api": true, 
+    "privileged": ["NET_ADMIN"], 
+	"full_access": true,
+ 
+    "options": { 
+    },
+    "schema": { 
+    }
+  }
